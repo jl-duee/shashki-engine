@@ -391,7 +391,3 @@ void follow_move_after_enemy(shashki::Move& move,
         follow_move_after_enemy(move, move_direction, capture_bit_board, move_bit_board, move_count + 1, attack_count + 1);
     }
 }
-
-// TODOs: Check optional values() -> direct access!
-// TODOs: Check whether move list allocation necessary (faster on stack)!
-// TODOs: Check move semantic for faster code
