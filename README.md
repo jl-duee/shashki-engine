@@ -2,8 +2,6 @@
 
 Shashki-Engine is an engine library that can be used for russian draughts applications. It is written in C++ and is provided together with a CLI (Command Line Interface) for some simple usage. The project is kicked of by Jean-Luc Düe in 2021 under the GPL-3.0 license.
 
-#
-
 ## Features to implement: ##
 
 - Board evaluation functionality
@@ -19,13 +17,9 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 - Move generation completely on stack (no heap allocations)
 - Move semantics (decrease number of copying on stack)
 
-#
-
 ## License: ##
 
 Please check out the file "COPYING" in the root of the repository.
-
-#
 
 ## Setup: ##
 
