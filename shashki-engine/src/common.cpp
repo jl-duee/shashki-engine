@@ -21,8 +21,12 @@ shashki::PieceType shashki::piece_type_opposite(PieceType piece_type)
     }
 }
 
-shashki::Piece::Piece(Side side, PieceType piece_type, int position)
-    : side(side), piece_type(piece_type), position(position) {}
+shashki::Piece::Piece(Side side,
+                      PieceType piece_type,
+                      int position)
+    : side(side),
+      piece_type(piece_type),
+      position(position) {}
 
 bool shashki::Piece::operator==(const Piece& piece) const
 {
@@ -54,7 +58,8 @@ bool shashki::BitBoard::operator==(const BitBoard& bit_board) const
         && this->black_kings == bit_board.black_kings;
 }
 
-unsigned long long shashki::BitBoard::pieces_of_side_and_type(Side side, PieceType piece_type) const
+unsigned long long shashki::BitBoard::pieces_of_side_and_type(Side side,
+                                                              PieceType piece_type) const
 {
     if (side == Side::WHITE) {
         if (piece_type == PieceType::MAN) {
@@ -90,7 +95,11 @@ shashki::PieceType shashki::BitBoard::piece_type_on_position(int position) const
     return (this->white_men | this->black_men) & (1ULL << position) ? PieceType::MAN : PieceType::KING;
 }
 
-shashki::Move::Move(Piece moving_piece, int target_position, std::optional<Piece> attacked_piece, bool promotion, BitBoard source_bit_board)
+shashki::Move::Move(Piece moving_piece,
+                    int target_position,
+                    std::optional<Piece> attacked_piece,
+                    bool promotion,
+                    BitBoard source_bit_board)
     : moving_piece(moving_piece),
       target_position(target_position),
       attacked_piece(attacked_piece),
@@ -99,11 +108,16 @@ shashki::Move::Move(Piece moving_piece, int target_position, std::optional<Piece
       target_bit_board(source_bit_board),
       follow_moves(std::forward_list<Move>())
 {
+    // The target_bit_board has been initialized like the source_bit_board and now the target_bit_board is altered
+    // so that it represents the state after the move is executed.
+
+    // 1. Remove the moving piece from its source position - this position shall be empty after the move.
     this->target_bit_board.white_men = this->target_bit_board.white_men & ~(1ULL << this->moving_piece.position);
     this->target_bit_board.white_kings = this->target_bit_board.white_kings & ~(1ULL << this->moving_piece.position);
     this->target_bit_board.black_men = this->target_bit_board.black_men & ~(1ULL << this->moving_piece.position);
     this->target_bit_board.black_kings = this->target_bit_board.black_kings & ~(1ULL << this->moving_piece.position);
 
+    // 2. If this move includes a jump, the attacked/jumped piece shall also be removed from it position.
     if (this->attacked_piece.has_value()) {
         this->target_bit_board.white_men = this->target_bit_board.white_men & ~(1ULL << this->attacked_piece->position);
         this->target_bit_board.white_kings = this->target_bit_board.white_kings & ~(1ULL << this->attacked_piece->position);
@@ -111,6 +125,7 @@ shashki::Move::Move(Piece moving_piece, int target_position, std::optional<Piece
         this->target_bit_board.black_kings = this->target_bit_board.black_kings & ~(1ULL << this->attacked_piece->position);
     }
 
+    // 3. Insert the moving piece to its target position. A promotion could also change the type of the piece in the target_bit_board.
     if (this->moving_piece.side == Side::WHITE && (this->promotion || this->moving_piece.piece_type == PieceType::KING)) {
         this->target_bit_board.white_kings = this->target_bit_board.white_kings | (1ULL << this->target_position);
     } else if (this->moving_piece.side == Side::WHITE) {
@@ -181,16 +196,19 @@ std::string shashki::Move::description() const
 {
     std::string description;
 
+    // 1. The source field followed by "-".
     description += (char) 7 - this->moving_piece.position % 8 + 65;
     description += std::to_string(this->moving_piece.position / 8 + 1);
     description += "-";
 
+    // 2. The jumped piece if there is any, followed by "-".
     if (this->attacked_piece.has_value()) {
         description += (char) 7 - this->attacked_piece->position % 8 + 65;
         description += std::to_string(this->attacked_piece->position / 8 + 1);
         description += "-";
     }
 
+    // 3. The target field.
     description += (char) 7 - this->target_position % 8 + 65;
     description += std::to_string(this->target_position / 8 + 1);
 
@@ -246,11 +264,18 @@ bool shashki::Game::operator==(const Game& game) const
 
 void shashki::Game::execute_move(const Move& move)
 {
+    // Copy over the move to executed_moves.
     this->executed_moves.push_back(move);
+    // Clear the follow_moves from the recently added move.
     this->executed_moves.back().clear_follow_moves();
 
+    // Alter the current BitBoard situation of the game based on the
+    // target_bit_board of the recently added move.
     this->bit_board = this->executed_moves.back().get_target_bit_board();
 
+    // Change the current turn if there is no combo situation,
+    // basically when there were no follow_moves provided with the
+    // move to be executed.
     if (move.get_follow_moves().empty()) {
         this->current_turn = side_opposite(this->current_turn);
     }
@@ -258,18 +283,22 @@ void shashki::Game::execute_move(const Move& move)
 
 void shashki::Game::undo_last_move()
 {
+    // Do not allow an undo in a start situation where there is nothing to undo.
     if (this->executed_moves.size() < 3) {
         return;
     }
 
+    // Remove the last moves that belong to the player that did the last moves.
     while (this->current_turn != this->executed_moves.back().get_moving_piece().side) {
         this->executed_moves.pop_back();
     }
 
+    // Remove the last moves of the other player as well.
     while (this->current_turn == this->executed_moves.back().get_moving_piece().side) {
         this->executed_moves.pop_back();
     }
 
+    // Alter the BitBoard situation accordingly.
     this->bit_board = this->executed_moves.back().get_target_bit_board();
 }
 
@@ -282,6 +311,7 @@ bool shashki::Game::in_move_combo() const
 shashki::Piece shashki::Game::move_combo_piece() const
 {
     const Move& last_move = this->executed_moves.back();
+
     return Piece(last_move.get_moving_piece().side,
                  last_move.is_promotion() ? PieceType::KING : last_move.get_moving_piece().piece_type,
                  last_move.get_target_position());

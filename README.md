@@ -10,8 +10,7 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 
 ## Technical improvements to work on: ##
 
-- Code formatting (maybe based on some standard)
-- Proper code documentation
+- Automatic code formatting (based on convention/standard)
 - Unit tests
 - Move semantics (decrease number of copying on stack)
 
