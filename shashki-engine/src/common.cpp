@@ -105,10 +105,10 @@ shashki::Move::Move(Piece moving_piece, int target_position, std::optional<Piece
     this->target_bit_board.black_kings = this->target_bit_board.black_kings & ~(1ULL << this->moving_piece.position);
 
     if (this->attacked_piece.has_value()) {
-        this->target_bit_board.white_men = this->target_bit_board.white_men & ~(1ULL << this->attacked_piece.value().position);
-        this->target_bit_board.white_kings = this->target_bit_board.white_kings & ~(1ULL << this->attacked_piece.value().position);
-        this->target_bit_board.black_men = this->target_bit_board.black_men & ~(1ULL << this->attacked_piece.value().position);
-        this->target_bit_board.black_kings = this->target_bit_board.black_kings & ~(1ULL << this->attacked_piece.value().position);
+        this->target_bit_board.white_men = this->target_bit_board.white_men & ~(1ULL << this->attacked_piece->position);
+        this->target_bit_board.white_kings = this->target_bit_board.white_kings & ~(1ULL << this->attacked_piece->position);
+        this->target_bit_board.black_men = this->target_bit_board.black_men & ~(1ULL << this->attacked_piece->position);
+        this->target_bit_board.black_kings = this->target_bit_board.black_kings & ~(1ULL << this->attacked_piece->position);
     }
 
     if (this->moving_piece.side == Side::WHITE && (this->promotion || this->moving_piece.piece_type == PieceType::KING)) {
@@ -186,8 +186,8 @@ std::string shashki::Move::description() const
     description += "-";
 
     if (this->attacked_piece.has_value()) {
-        description += (char) 7 - this->attacked_piece.value().position % 8 + 65;
-        description += std::to_string(this->attacked_piece.value().position / 8 + 1);
+        description += (char) 7 - this->attacked_piece->position % 8 + 65;
+        description += std::to_string(this->attacked_piece->position / 8 + 1);
         description += "-";
     }
 
@@ -292,7 +292,7 @@ unsigned long long shashki::Game::capture_bit_board() const
     unsigned long long capture_bit_board = 0;
 
     for (std::vector<Move>::const_reverse_iterator iterator = this->executed_moves.rbegin(); this->current_turn == iterator->get_moving_piece().side; iterator++) {
-        capture_bit_board = capture_bit_board | (1ULL << iterator->get_attacked_piece().value().position);
+        capture_bit_board = capture_bit_board | (1ULL << iterator->get_attacked_piece()->position);
     }
 
     return capture_bit_board;

@@ -13,7 +13,6 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 - Code formatting (maybe based on some standard)
 - Proper code documentation
 - Unit tests
-- Optional value check (currently checking twice)
 - Move generation completely on stack (no heap allocations)
 - Move semantics (decrease number of copying on stack)
 

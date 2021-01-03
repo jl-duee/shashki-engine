@@ -334,7 +334,7 @@ void follow_move_before_enemy(shashki::Move& move,
     }
 
     unsigned long long attack_bit_board =
-        move_bit_board & move.get_target_bit_board().blocking_board_of_side(move.get_attacked_piece().value().side);
+        move_bit_board & move.get_target_bit_board().blocking_board_of_side(move.get_attacked_piece()->side);
     move_bit_board = move_bit_board & ~move.get_target_bit_board().blocking_board();
 
     if (move.get_moving_piece().piece_type == shashki::PieceType::KING || move.is_promotion()) {
@@ -370,7 +370,7 @@ void follow_move_after_enemy(shashki::Move& move,
                         bit - move_count * move_direction.position_move),
                     bit,
                     shashki::Piece(
-                        move.get_attacked_piece().value().side,
+                        move.get_attacked_piece()->side,
                         move.get_target_bit_board().piece_type_on_position(bit - attack_count * move_direction.position_move),
                         bit - attack_count * move_direction.position_move),
                     move_direction.promotion_check(
