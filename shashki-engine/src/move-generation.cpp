@@ -89,7 +89,7 @@ void follow_move_after_enemy(shashki::Move& move, const MoveDirection& move_dire
 
 // Implementation:
 
-std::vector<shashki::Move>* shashki::generate_moves_for_game(const Game& game)
+std::vector<shashki::Move> shashki::generate_moves_for_game(const Game& game)
 {
     if (game.in_move_combo()) {
         return generate_moves_for_piece(game.get_bit_board(), game.move_combo_piece(), game.capture_bit_board());
@@ -98,46 +98,46 @@ std::vector<shashki::Move>* shashki::generate_moves_for_game(const Game& game)
     }
 }
 
-std::vector<shashki::Move>* shashki::generate_moves_for_side(const BitBoard& bit_board, const Side& side)
+std::vector<shashki::Move> shashki::generate_moves_for_side(const BitBoard& bit_board, const Side& side)
 {
-    std::vector<Move>* moves = new std::vector<Move>();
+    std::vector<Move> moves = std::vector<Move>();
     
-    generate_attack_moves(*moves, bit_board, side, PieceType::MAN, LEFT_UP);
-    generate_attack_moves(*moves, bit_board, side, PieceType::MAN, RIGHT_UP);
-    generate_attack_moves(*moves, bit_board, side, PieceType::MAN, LEFT_DOWN);
-    generate_attack_moves(*moves, bit_board, side, PieceType::MAN, RIGHT_DOWN);
-    generate_attack_moves(*moves, bit_board, side, PieceType::KING, LEFT_UP);
-    generate_attack_moves(*moves, bit_board, side, PieceType::KING, RIGHT_UP);
-    generate_attack_moves(*moves, bit_board, side, PieceType::KING, LEFT_DOWN);
-    generate_attack_moves(*moves, bit_board, side, PieceType::KING, RIGHT_DOWN);
+    generate_attack_moves(moves, bit_board, side, PieceType::MAN, LEFT_UP);
+    generate_attack_moves(moves, bit_board, side, PieceType::MAN, RIGHT_UP);
+    generate_attack_moves(moves, bit_board, side, PieceType::MAN, LEFT_DOWN);
+    generate_attack_moves(moves, bit_board, side, PieceType::MAN, RIGHT_DOWN);
+    generate_attack_moves(moves, bit_board, side, PieceType::KING, LEFT_UP);
+    generate_attack_moves(moves, bit_board, side, PieceType::KING, RIGHT_UP);
+    generate_attack_moves(moves, bit_board, side, PieceType::KING, LEFT_DOWN);
+    generate_attack_moves(moves, bit_board, side, PieceType::KING, RIGHT_DOWN);
     
-    if (moves->empty() && side == Side::WHITE) {
-        generate_normal_moves(*moves, bit_board, side, PieceType::MAN, LEFT_UP);
-        generate_normal_moves(*moves, bit_board, side, PieceType::MAN, RIGHT_UP);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, LEFT_UP);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, RIGHT_UP);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, LEFT_DOWN);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, RIGHT_DOWN);
-    } else if (moves->empty() && side == Side::BLACK) {
-        generate_normal_moves(*moves, bit_board, side, PieceType::MAN, LEFT_DOWN);
-        generate_normal_moves(*moves, bit_board, side, PieceType::MAN, RIGHT_DOWN);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, LEFT_UP);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, RIGHT_UP);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, LEFT_DOWN);
-        generate_normal_moves(*moves, bit_board, side, PieceType::KING, RIGHT_DOWN);
+    if (moves.empty() && side == Side::WHITE) {
+        generate_normal_moves(moves, bit_board, side, PieceType::MAN, LEFT_UP);
+        generate_normal_moves(moves, bit_board, side, PieceType::MAN, RIGHT_UP);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, LEFT_UP);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, RIGHT_UP);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, LEFT_DOWN);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, RIGHT_DOWN);
+    } else if (moves.empty() && side == Side::BLACK) {
+        generate_normal_moves(moves, bit_board, side, PieceType::MAN, LEFT_DOWN);
+        generate_normal_moves(moves, bit_board, side, PieceType::MAN, RIGHT_DOWN);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, LEFT_UP);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, RIGHT_UP);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, LEFT_DOWN);
+        generate_normal_moves(moves, bit_board, side, PieceType::KING, RIGHT_DOWN);
     }
     
     return moves;
 }
 
-std::vector<shashki::Move>* shashki::generate_moves_for_piece(const BitBoard& bit_board, const Piece& piece, unsigned long long capture_bit_board)
+std::vector<shashki::Move> shashki::generate_moves_for_piece(const BitBoard& bit_board, const Piece& piece, unsigned long long capture_bit_board)
 {
-    std::vector<Move>* moves = new std::vector<Move>();
+    std::vector<Move> moves = std::vector<Move>();
 
-    generate_attack_moves_for_piece(*moves, bit_board, piece, LEFT_UP, capture_bit_board);
-    generate_attack_moves_for_piece(*moves, bit_board, piece, RIGHT_UP, capture_bit_board);
-    generate_attack_moves_for_piece(*moves, bit_board, piece, LEFT_DOWN, capture_bit_board);
-    generate_attack_moves_for_piece(*moves, bit_board, piece, RIGHT_DOWN, capture_bit_board);
+    generate_attack_moves_for_piece(moves, bit_board, piece, LEFT_UP, capture_bit_board);
+    generate_attack_moves_for_piece(moves, bit_board, piece, RIGHT_UP, capture_bit_board);
+    generate_attack_moves_for_piece(moves, bit_board, piece, LEFT_DOWN, capture_bit_board);
+    generate_attack_moves_for_piece(moves, bit_board, piece, RIGHT_DOWN, capture_bit_board);
 
     return moves;
 }

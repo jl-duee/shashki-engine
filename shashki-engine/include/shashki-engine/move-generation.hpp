@@ -16,10 +16,10 @@
 namespace shashki
 {
 
-std::vector<Move>* generate_moves_for_game(const Game& game);
+std::vector<Move> generate_moves_for_game(const Game& game);
 
-std::vector<Move>* generate_moves_for_side(const BitBoard& bit_board, const Side& side);
+std::vector<Move> generate_moves_for_side(const BitBoard& bit_board, const Side& side);
 
-std::vector<Move>* generate_moves_for_piece(const BitBoard& bit_board, const Piece& piece, unsigned long long capture_bit_board);
+std::vector<Move> generate_moves_for_piece(const BitBoard& bit_board, const Piece& piece, unsigned long long capture_bit_board);
 
 }
