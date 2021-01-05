@@ -106,7 +106,7 @@ shashki::Move::Move(Piece moving_piece,
       promotion(promotion),
       source_bit_board(source_bit_board),
       target_bit_board(source_bit_board),
-      follow_moves(std::forward_list<Move>())
+      follow_moves(std::vector<Move>())
 {
     // The target_bit_board has been initialized like the source_bit_board and now the target_bit_board is altered
     // so that it represents the state after the move is executed.
@@ -145,7 +145,7 @@ bool shashki::Move::operator==(const Move& move) const
 
 void shashki::Move::add_follow_move(const Move& follow_move)
 {
-    this->follow_moves.push_front(follow_move);
+    this->follow_moves.push_back(follow_move);
 }
 
 void shashki::Move::clear_follow_moves()
@@ -185,11 +185,11 @@ void shashki::Move::shrink_follow_moves_randomly()
         return;
     }
 
-    std::forward_list<Move> new_follow_moves;
-    std::sample(this->follow_moves.begin(), this->follow_moves.end(), std::front_inserter(new_follow_moves), 1, std::mt19937_64{std::random_device{}()});
+    std::vector<Move> new_follow_moves;
+    std::sample(this->follow_moves.begin(), this->follow_moves.end(), std::back_inserter(new_follow_moves), 1, std::mt19937_64{std::random_device{}()});
     this->follow_moves = new_follow_moves;
 
-    this->follow_moves.front().shrink_follow_moves_randomly();
+    this->follow_moves.back().shrink_follow_moves_randomly();
 }
 
 std::string shashki::Move::description() const
@@ -245,7 +245,7 @@ const shashki::BitBoard& shashki::Move::get_target_bit_board() const
     return this->target_bit_board;
 }
 
-const std::forward_list<shashki::Move>& shashki::Move::get_follow_moves() const
+const std::vector<shashki::Move>& shashki::Move::get_follow_moves() const
 {
     return this->follow_moves;
 }

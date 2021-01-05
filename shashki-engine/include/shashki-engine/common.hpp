@@ -10,9 +10,8 @@
 #pragma once
 
 #include <optional>
-#include <forward_list>
-#include <string>
 #include <vector>
+#include <string>
 
 namespace shashki
 {
@@ -203,7 +202,7 @@ class Move
     bool                    promotion;
     BitBoard                source_bit_board;
     BitBoard                target_bit_board;
-    std::forward_list<Move> follow_moves;
+    std::vector<Move>       follow_moves;
 
     public:
 
@@ -276,7 +275,7 @@ class Move
     const bool& is_promotion() const;
     const BitBoard& get_source_bit_board() const;
     const BitBoard& get_target_bit_board() const;
-    const std::forward_list<Move>& get_follow_moves() const;
+    const std::vector<Move>& get_follow_moves() const;
 };
 
 /**
