@@ -4,7 +4,6 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 
 ## Features to implement: ##
 
-- Engine tree traversal with minimax and alpha/beta pruning
 - CLI with some simple visualizations
 
 ## Technical improvements to work on: ##
@@ -12,6 +11,7 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 - Automatic code formatting (based on convention/standard)
 - Unit tests
 - Move semantics (decrease number of copying on stack)
+- Multithreading support
 
 ## License: ##
 

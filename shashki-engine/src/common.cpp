@@ -185,7 +185,7 @@ void shashki::Move::shrink_follow_moves_randomly()
         return;
     }
 
-    std::vector<Move> new_follow_moves;
+    std::vector<Move> new_follow_moves = std::vector<Move>();
     std::sample(this->follow_moves.begin(), this->follow_moves.end(), std::back_inserter(new_follow_moves), 1, std::mt19937_64{std::random_device{}()});
     this->follow_moves = new_follow_moves;
 
