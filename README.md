@@ -4,7 +4,7 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 
 ## Features to implement: ##
 
-- CLI with some simple visualizations
+- Executable benchmark
 
 ## Technical improvements to work on: ##
 
