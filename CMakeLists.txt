@@ -5,3 +5,4 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(shashki-engine)
 add_subdirectory(shashki-cli)
+add_subdirectory(shashki-benchmark)

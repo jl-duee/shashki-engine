@@ -4,7 +4,8 @@ Shashki-Engine is an engine library that can be used for russian draughts applic
 
 ## Features to implement: ##
 
-- Executable benchmark
+- Benchmark for best move calculation
+- PDN compliant export of the game and moves (maybe in json?)
 
 ## Technical improvements to work on: ##
 
