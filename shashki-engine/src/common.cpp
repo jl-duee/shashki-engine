@@ -1,6 +1,7 @@
 #include "shashki-engine/common.hpp"
 
 #include <algorithm>
+#include <iterator>
 #include <random>
 
 shashki::Side shashki::side_opposite(Side side)
