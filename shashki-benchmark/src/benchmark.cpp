@@ -43,9 +43,9 @@ void benchmark_move_generation()
     std::cout << "Moves calculated for " << (int) (MAX_BOARDS_MOVE_GENERATION / (millis / 1000.0)) << " board constellations per second.\n\n";
 }
 
-void benchmark_engine_level(int level, int repititions)
+void benchmark_engine_depth(int depth, int repititions)
 {
-    std::cout << "Benchmark engine level " << level << "...\n";
+    std::cout << "Benchmark engine depth " << depth << "...\n";
 
     std::chrono::duration before_benchmark = std::chrono::high_resolution_clock::now().time_since_epoch();
     shashki::Game game = shashki::Game();
@@ -55,22 +55,22 @@ void benchmark_engine_level(int level, int repititions)
             game = shashki::Game();
         }
 
-        game.execute_move(shashki::best_move(game, level));
+        game.execute_move(shashki::best_move(game, depth));
     }
 
     std::chrono::duration after_benchmark = std::chrono::high_resolution_clock::now().time_since_epoch();
     std::chrono::duration benchmark_duration = after_benchmark - before_benchmark;
     unsigned long long millis = std::chrono::duration_cast<std::chrono::milliseconds>(benchmark_duration).count();
 
-    std::cout << "Calculation for level " << level << " takes on average " << millis / repititions << " milliseconds.\n";
+    std::cout << "Calculation for depth " << depth << " takes on average " << millis / repititions << " milliseconds.\n";
 }
 
 void benchmark_engine()
 {
     std::cout << "Starting engine benchmark.\n";
-    benchmark_engine_level(10, 1000);
-    benchmark_engine_level(15, 10);
-    benchmark_engine_level(18, 3);
+    benchmark_engine_depth(10, 1000);
+    benchmark_engine_depth(15, 10);
+    benchmark_engine_depth(18, 3);
     std::cout << "Engine benchmark finished.\n\n";
 }
 
